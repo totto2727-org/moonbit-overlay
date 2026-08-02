@@ -76,9 +76,7 @@ nix flake init -t github:moonbit-community/moonbit-overlay
 
 ## Moonbit Package Builder
 
-`buildMoonPackage` builds a MoonBit project from source inside the Nix sandbox.
-It reads `moon.mod.json` to auto-detect version, preferred target, and source
-directory — minimal configuration is needed:
+`buildMoonPackage` builds a MoonBit project from source inside the Nix sandbox. It evaluates `moon.mod` with a generated standalone MoonBit script to auto-detect package metadata, dependencies, and the preferred target, so minimal configuration is needed:
 
 ```nix
 {
@@ -106,7 +104,7 @@ directory — minimal configuration is needed:
 
         packages.default = pkgs.moonPlatform.buildMoonPackage {
           src = ./.;
-          moonModJson = ./moon.mod.json;
+          moonMod = ./moon.mod;
           moonRegistryIndex = inputs.moon-registry;
         };
       };
@@ -123,17 +121,19 @@ directory — minimal configuration is needed:
 ### What it does automatically
 
 - Resolves and caches all transitive dependencies from `mooncakes.io` registry
-- Reads `version`, `preferred-target`, and `source` from `moon.mod.json`
+- Reads package metadata and dependencies from `moon.mod`
 - Builds with `moon build --target <preferred-target> --release`
 - Installs all produced binaries to `$out/bin/`
+
+Evaluating `buildMoonPackage` runs the generated `.mbtx` converter through Import From Derivation, so Nix must allow `allow-import-from-derivation`.
 
 ### Optional parameters
 
 | Parameter            | Default                             | Description                                    |
 | -------------------- | ----------------------------------- | ---------------------------------------------- |
-| `name`               | from `moon.mod.json`                | Derivation name (last component of mod name)   |
-| `version`            | from `moon.mod.json`                | Package version                                |
-| `moonTarget`         | `preferred-target` in moon.mod.json | Build target (`native`, `js`, `wasm`, etc.)    |
+| `name`               | from `moon.mod`                      | Derivation name (last component of mod name)   |
+| `version`            | from `moon.mod`                      | Package version                                |
+| `moonTarget`         | `preferred_target` in `moon.mod`    | Build target (`native`, `js`, `wasm`, etc.)    |
 | `moonFlags`          | `[]`                                | Extra flags passed to `moon build`             |
 | `buildPhase`         | auto-generated                      | Override the build phase                       |
 | `installPhase`       | auto-generated                      | Override the install phase                     |

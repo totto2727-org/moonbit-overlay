@@ -172,11 +172,11 @@
           testBuildMoonPackage = pkgs.moonPlatform.buildMoonPackage {
             name = "moonbit-overlay-test-with-deps";
             src = ./test/with_deps;
-            moonModJson = ./test/with_deps/moon.mod.json;
+            moonMod = ./test/with_deps/moon.mod;
             moonRegistryIndex = pkgs.fetchgit {
               url = "https://mooncakes.io/git/index";
-              rev = "db98c15d651555a82a229a8ed29973ef04a3c683";
-              sha256 = "sha256-ZU514Qu8/aJJLRvnVOH+qc8SN1vAoFV338UQvIxh+Ro=";
+              rev = "37ce111fab93e63aa09bf4f154e6fae85faf4286";
+              sha256 = "sha256-a6wOvv0O3m+FHSSTo7uI330j/nR13VM7EF3WGxg/50s=";
             };
           };
         }

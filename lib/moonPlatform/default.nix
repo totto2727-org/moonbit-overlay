@@ -1,6 +1,6 @@
 # moonPlatform
 # Basic strategy:
-# 1. List up all dependencies of root moon.mod.json
+# 1. Parse root moon.mod and list all dependencies
 #    ./parseMoonIndex.nix
 #    ./listAllDependencies.nix
 # 2. Fetch all dependencies into $MOON_HOME/registry/cache
@@ -14,6 +14,8 @@
   makeWrapper,
   system,
   callPackage,
+  runCommand,
+  writeText,
   zig,
   clang,
   pkg-config,
@@ -65,6 +67,16 @@ let
       ;
   };
 
+  moonModToJson = import ./moonModToJson.nix {
+    inherit
+      buildCachedRegistry
+      bundleWithRegistry
+      runCommand
+      stdenv
+      writeText
+      ;
+  };
+
   bundleWithRegistry = import ./bundleWithRegistry.nix {
     inherit
       symlinkJoin
@@ -80,6 +92,7 @@ let
       stdenv
       buildCachedRegistry
       bundleWithRegistry
+      moonModToJson
       ;
   };
 

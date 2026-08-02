@@ -1,11 +1,11 @@
 # Main builder of moonPlatform.
 #
-# Reads moon.mod.json to determine version, source directory, and preferred
-# build target so callers need minimal configuration:
+# Reads moon.mod to determine metadata, dependencies, and the preferred build
+# target so callers need minimal configuration:
 #
 #   pkgs.moonPlatform.buildMoonPackage {
 #     src = ./.;
-#     moonModJson = ./moon.mod.json;
+#     moonMod = ./moon.mod;
 #     moonRegistryIndex = inputs.moon-registry;
 #   }
 {
@@ -13,12 +13,13 @@
   stdenv,
   buildCachedRegistry,
   bundleWithRegistry,
+  moonModToJson,
   ...
 }:
 let
   buildMoonPackage =
     {
-      moonModJson,
+      moonMod,
       moonRegistryIndex,
       moonFlags ? [ ],
       moonMainPkg ? null,
@@ -26,14 +27,15 @@ let
       ...
     }@args:
     let
-      moonMod = builtins.fromJSON (builtins.readFile moonModJson);
+      parsedMoonMod = moonModToJson {
+        inherit moonMod;
+        registryIndexSrc = moonRegistryIndex;
+      };
 
-      # Auto-detect from moon.mod.json
-      # name is "owner/repo" in moon.mod.json; use the last component
-      derivedName = lib.last (lib.splitString "/" (moonMod.name or "moon-package"));
-      derivedVersion = moonMod.version or "0.0.0";
-      sourceDir = moonMod.source or "src";
-      preferredTarget = moonMod.preferred-target or "native";
+      # name is "owner/repo" in moon.mod; use the last component
+      derivedName = lib.last (lib.splitString "/" (parsedMoonMod.name or "moon-package"));
+      derivedVersion = parsedMoonMod.version or "0.0.0";
+      preferredTarget = parsedMoonMod.preferred-target or "native";
 
       effectiveTarget = if moonTarget != null then moonTarget else preferredTarget;
 
@@ -46,14 +48,15 @@ let
         in
         if matches != [ ] then builtins.head matches else null;
 
-      derivedLicense = if moonMod ? license then findLicenseBySpdxId moonMod.license else null;
+      derivedLicense =
+        if parsedMoonMod ? license then findLicenseBySpdxId parsedMoonMod.license else null;
       derivedMeta =
-        lib.optionalAttrs (moonMod ? description) { description = moonMod.description; }
-        // lib.optionalAttrs (moonMod ? repository) { homepage = moonMod.repository; }
+        lib.optionalAttrs (parsedMoonMod ? description) { description = parsedMoonMod.description; }
+        // lib.optionalAttrs (parsedMoonMod ? repository) { homepage = parsedMoonMod.repository; }
         // lib.optionalAttrs (derivedLicense != null) { license = derivedLicense; };
 
       cachedRegistry = buildCachedRegistry {
-        inherit moonModJson;
+        moonModDepsSet = parsedMoonMod.deps or { };
         registryIndexSrc = moonRegistryIndex;
       };
       moonHome = bundleWithRegistry {
@@ -107,7 +110,7 @@ let
     in
     stdenv.mkDerivation (
       (builtins.removeAttrs args [
-        "moonModJson"
+        "moonMod"
         "moonRegistryIndex"
         "moonFlags"
         "moonMainPkg"
