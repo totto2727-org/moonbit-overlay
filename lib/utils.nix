@@ -4,7 +4,6 @@ rec {
   target =
     {
       "x86_64-linux" = "linux-x86_64";
-      "x86_64-darwin" = "darwin-x86_64";
       "aarch64-darwin" = "darwin-aarch64";
     }
     .${stdenv.hostPlatform.system} or (throw "Unsupported platform: ${stdenv.hostPlatform.system}");
