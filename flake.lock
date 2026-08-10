@@ -1,5 +1,22 @@
 {
   "nodes": {
+    "moon-registry": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1785603255,
+        "narHash": "sha256-67FBhlO53KoEgXq4qkze/WiQZ1ZSk3gUTKFB396y/Us=",
+        "ref": "refs/heads/main",
+        "rev": "37ce111fab93e63aa09bf4f154e6fae85faf4286",
+        "revCount": 11790,
+        "type": "git",
+        "url": "https://mooncakes.io/git/index"
+      },
+      "original": {
+        "rev": "37ce111fab93e63aa09bf4f154e6fae85faf4286",
+        "type": "git",
+        "url": "https://mooncakes.io/git/index"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1785975029,
@@ -18,6 +35,7 @@
     },
     "root": {
       "inputs": {
+        "moon-registry": "moon-registry",
         "nixpkgs": "nixpkgs",
         "treefmt-nix": "treefmt-nix"
       }

@@ -1,5 +1,9 @@
 {
   inputs = {
+    moon-registry = {
+      url = "git+https://mooncakes.io/git/index?rev=37ce111fab93e63aa09bf4f154e6fae85faf4286";
+      flake = false;
+    };
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
@@ -10,6 +14,7 @@
   outputs =
     {
       self,
+      moon-registry,
       nixpkgs,
       treefmt-nix,
     }:
@@ -173,11 +178,7 @@
             name = "moonbit-overlay-test-with-deps";
             src = ./test/with_deps;
             moonMod = ./test/with_deps/moon.mod;
-            moonRegistryIndex = pkgs.fetchgit {
-              url = "https://mooncakes.io/git/index";
-              rev = "37ce111fab93e63aa09bf4f154e6fae85faf4286";
-              sha256 = "sha256-a6wOvv0O3m+FHSSTo7uI330j/nR13VM7EF3WGxg/50s=";
-            };
+            moonRegistryIndex = moon-registry;
           };
         }
       );
