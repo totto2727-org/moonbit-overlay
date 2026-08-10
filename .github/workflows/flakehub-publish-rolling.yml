@@ -19,3 +19,4 @@ jobs:
           name: "totto2727-org/moonbit-overlay"
           rolling: true
           visibility: "public"
+          # include-output-paths: true
