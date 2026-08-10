@@ -184,6 +184,9 @@
             moonMod = ./test/with_deps/moon.mod;
             moonRegistryIndex = moon-registry;
           };
+          testMinimalMoonModConsumer = pkgs.callPackage ./test/minimal/package.nix {
+            moonRegistryIndex = moon-registry;
+          };
         }
       );
     };
