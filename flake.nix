@@ -20,7 +20,11 @@
     }:
     let
       inherit (nixpkgs) lib;
-      forEachSystem = lib.genAttrs lib.systems.flakeExposed;
+      supportedSystems = [
+        "x86_64-linux"
+        "aarch64-darwin"
+      ];
+      forEachSystem = lib.genAttrs supportedSystems;
 
       minVersion = "0.6.28";
       deprecated = import ./deprecated.nix lib;
