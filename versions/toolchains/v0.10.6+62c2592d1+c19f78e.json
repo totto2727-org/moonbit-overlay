@@ -1,0 +1,8 @@
+{
+  "version": "v0.10.6+62c2592d1+c19f78e",
+  "coreHash": "sha256-OLDhcO1HAoTlVYVuJ0QzY2GyrbWvSyCFkEAUuITr+sk=",
+  "linux-x86_64-toolchainsHash": "sha256-b2EDcnJz6MRkOALTt0F/hF3AoPMhfqPiy+44UP1SJBU=",
+  "darwin-aarch64-toolchainsHash": "sha256-wUEoWDoiQgCU7+NmpllQ0Br/EPG30mOVEfUyOOMMZhA=",
+  "moonRev": "c9ac7ee",
+  "moonHash": "sha256-AcadNERJZE/nLliRM9GssMk9sOIX2BznGNeHgwJiMlg="
+}
