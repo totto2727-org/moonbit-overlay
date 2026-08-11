@@ -1,25 +1,20 @@
-name: "Publish every Git push to master to FlakeHub"
+name: Publish every Git push to master to FlakeHub
+
 on:
   push:
     branches:
-      - "master"
+      - master
+
 jobs:
   flakehub-publish:
-    runs-on: "ubuntu-latest"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
-      id-token: "write"
-      contents: "read"
+      id-token: write
+      contents: read
     steps:
-      - uses: "actions/checkout@v6"
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: "DeterminateSystems/determinate-nix-action@v3"
-      - uses: "DeterminateSystems/flakehub-push@main"
-        with:
-          name: "totto2727-org/moonbit-overlay"
-          rolling: true
-          visibility: "public"
-          # Limit pre-publish evaluation to the runner system because cross-system cache inputs are unavailable.
-          my-flake-is-too-big: true
-          # Do not register individual output paths.
-          include-output-paths: false
+      - uses: totto2727-org/monorepo/.github/actions/setup-nix@main
+      - uses: totto2727-org/monorepo/.github/actions/publish-flakehub@main
