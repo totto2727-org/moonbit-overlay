@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 toolchains_dir="./versions/toolchains"
 latest_file="$toolchains_dir/latest.json"
 nightly_file="$toolchains_dir/nightly.json"
@@ -16,8 +18,9 @@ fetch-sha256() {
   uri="$1"
   name="$2"
   echo -e "\e[0;36mfetching \e[4;36m$uri\e[0;36m...\e[0m" > /dev/stderr
-  curl -o "$name" "$uri"
-  hash=$(nix-hash --type sha256 --base64 --flat "$name")
+  curl --fail --show-error --location --output "$name" "$uri" || return 1
+  tar -tzf "$name" > /dev/null || return 1
+  hash=$(nix-hash --type sha256 --base64 --flat "$name") || return 1
   echo -e "\e[0;36mcalculated hash: \e[1;36m$hash\e[0m" > /dev/stderr
 
   echo "$hash"
@@ -33,7 +36,7 @@ fetch-sha256() {
 # `latest` has not changed.
 # ---------------------------------------------------------------------------
 echo -e "\e[0;36mfetching nightly toolchains\e[0m" > /dev/stderr
-for target in linux-x86_64 darwin-aarch64; do
+for target in linux-x86_64 linux-aarch64 darwin-aarch64; do
   nightly_uri="$uri/binaries/nightly/moonbit-$target.tar.gz"
   nightly_hash=$(fetch-sha256 "$nightly_uri" "moonbit-$target.tar.gz")
   $sedi "s|$target-toolchainsHash\": \"sha256-.*\"|$target-toolchainsHash\": \"sha256-$nightly_hash\"|" $nightly_file
@@ -51,7 +54,7 @@ $sedi "s|coreHash\": \"sha256-.*\"|coreHash\": \"sha256-$nightly_core_hash\"|" $
 # ---------------------------------------------------------------------------
 run_version=""
 old_version=$($sednr 's|^\s*"version\": \"(.*)\",$|\1|p' $latest_file)
-for target in linux-x86_64 darwin-aarch64; do # Keep the linux-x86_64 first
+for target in linux-x86_64 linux-aarch64 darwin-aarch64; do # Keep the linux-x86_64 first
   # phase 0
   target_uri="$uri/binaries/latest/moonbit-$target.tar.gz"
 

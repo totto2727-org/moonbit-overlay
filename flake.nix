@@ -22,6 +22,7 @@
       inherit (nixpkgs) lib;
       supportedSystems = [
         "x86_64-linux"
+        "aarch64-linux"
         "aarch64-darwin"
       ];
       forEachSystem = lib.genAttrs supportedSystems;
