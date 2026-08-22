@@ -11,8 +11,8 @@
 }:
 let
   converterDeps = {
-    "moonbitlang/async" = "0.20.1";
-    "moonbitlang/moon_config" = "0.3.8";
+    "moonbitlang/async" = "0.21.0";
+    "moonbitlang/moon_config" = "0.3.13";
   };
   cachedRegistry = buildCachedRegistry {
     inherit registryIndexSrc;
@@ -24,9 +24,9 @@ let
   converter = writeText "moon-mod-json.mbtx" ''
     ///|
     import {
-      "moonbitlang/moon_config@0.3.8",
-      "moonbitlang/async@0.20.1",
-      "moonbitlang/async@0.20.1/stdio",
+      "moonbitlang/moon_config@0.3.13",
+      "moonbitlang/async@0.21.0",
+      "moonbitlang/async@0.21.0/stdio",
     }
 
     ///|
