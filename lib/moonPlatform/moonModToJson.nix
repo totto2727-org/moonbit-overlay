@@ -33,7 +33,7 @@ let
     async fn main {
       let source = @stdio.stdin.read_all().text()
       let (ast, reports) = @moon_config.parse_moon_mod(source, name="<stdin>")
-      // source is valid in moon.mod but is not recognized by moon_config 0.3.8.
+      // source is valid in moon.mod but is not yet recognized by moon_config.
       let actionable_reports = reports.filter(report =>
         report.msg != "Invalid moon.mod config: unexpected key `source`."
       )
