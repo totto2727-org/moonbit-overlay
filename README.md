@@ -9,19 +9,19 @@ NOTE: [moonbit-compiler](https://github.com/moonbitlang/moonbit-compiler) was al
 ### Run [moon](https://github.com/moonbitlang/moon) in one line
 
 ```bash
-nix run github:moonbit-community/moonbit-overlay#moon
+nix run github:totto2727-org/moonbit-overlay#moon
 ```
 
 ### List all available binaries
 
 ```bash
-nix run github:moonbit-community/moonbit-overlay#<tab>
+nix run github:totto2727-org/moonbit-overlay#<tab>
 ```
 
 ### Create devshell from template
 
 ```bash
-nix flake init -t github:moonbit-community/moonbit-overlay
+nix flake init -t github:totto2727-org/moonbit-overlay
 ```
 
 ## Features
@@ -43,7 +43,7 @@ nix flake init -t github:moonbit-community/moonbit-overlay
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     devshell.url = "github:numtide/devshell";
-    moonbit-overlay.url = "github:moonbit-community/moonbit-overlay";
+    moonbit-overlay.url = "github:totto2727-org/moonbit-overlay";
   };
 
   outputs = inputs@{ flake-parts, ... }:
@@ -67,6 +67,7 @@ nix flake init -t github:moonbit-community/moonbit-overlay
 
       systems = [
         "x86_64-linux"
+        "aarch64-linux"
         "aarch64-darwin"
       ];
     };
@@ -85,7 +86,7 @@ nix flake init -t github:moonbit-community/moonbit-overlay
     flake-parts.url = "github:hercules-ci/flake-parts";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    moonbit-overlay.url = "github:moonbit-community/moonbit-overlay";
+    moonbit-overlay.url = "github:totto2727-org/moonbit-overlay";
     moon-registry = {
       url = "git+https://mooncakes.io/git/index";
       flake = false;
@@ -110,6 +111,7 @@ nix flake init -t github:moonbit-community/moonbit-overlay
 
       systems = [
         "x86_64-linux"
+        "aarch64-linux"
         "aarch64-darwin"
       ];
     };
@@ -169,8 +171,8 @@ name `moonx`, so `moonx` runs packages from the Mooncakes registry without
 installing them:
 
 ```bash
-nix run github:moonbit-community/moonbit-overlay#moonx -- user/module/package
-nix run github:moonbit-community/moonbit-overlay#moonx -- kokic/fakefetch/cli/ffetch
+nix run github:totto2727-org/moonbit-overlay#moonx -- user/module/package
+nix run github:totto2727-org/moonbit-overlay#moonx -- kokic/fakefetch/cli/ffetch
 ```
 
 ## Version
@@ -189,6 +191,10 @@ moonbit-bin.moonbit.nightly
 
 `nightly` is a **rolling** channel that tracks the upstream nightly build
 (the same one the official installer fetches with `install.sh nightly`).
+
+On `aarch64-linux`, `latest`, `nightly`, and pinned releases starting with
+v0.10.9 are available. Older pinned releases do not have archived ARM Linux
+toolchains and are omitted on that system.
 
 ### specific version
 

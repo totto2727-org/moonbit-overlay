@@ -27,23 +27,30 @@
   version,
 }:
 let
-  inherit (import ../utils.nix { inherit stdenv lib; }) mkToolChainsUri mkCoreUri target;
+  inherit (import ../utils.nix { inherit stdenv lib; })
+    mkToolChainsUri
+    mkCoreUri
+    releaseRepositoryFor
+    target
+    ;
+  record = versions.${version};
+  releaseRepository = releaseRepositoryFor record;
 
   moon-patched = callPackage ../moon-patched {
-    rev = versions.${version}.moonRev;
-    hash = versions.${version}.moonHash;
+    rev = record.moonRev;
+    hash = record.moonHash;
   };
 
   toolchains = callPackage ../toolchains.nix {
     inherit version moon-patched;
-    url = mkToolChainsUri version;
-    hash = versions."${version}"."${target}-toolchainsHash";
+    url = mkToolChainsUri version releaseRepository;
+    hash = record."${target}-toolchainsHash";
   };
 
   core = callPackage ../core.nix {
     inherit version;
-    url = mkCoreUri version;
-    hash = versions."${version}".coreHash;
+    url = mkCoreUri version releaseRepository;
+    hash = record.coreHash;
   };
 
   fetchMoonPackage = import ./fetchMoonPackage.nix {

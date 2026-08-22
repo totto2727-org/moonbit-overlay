@@ -2,6 +2,7 @@
   "version": "v0.10.9+6e6c44045+fc2a4ee",
   "coreHash": "sha256-2SuE6gvBHsmp/lfTE0FqZpSlgm9DB+jmXVB1B57pE8o=",
   "linux-x86_64-toolchainsHash": "sha256-DoHes17KKeiSQVz5VOpCtIpDvPJ3rTajrh6X0tHf5zI=",
+  "linux-aarch64-toolchainsHash": "sha256-wP/KOq6FeU39CkdzrARqV0QdqPIZ0zGRkFRqjqyCEZM=",
   "darwin-aarch64-toolchainsHash": "sha256-QZd3fiUanzefQTOJaHZHbJqSyc0d3PUoeid/vlYpX0o=",
   "moonRev": "c9ac7ee",
   "moonHash": "sha256-AcadNERJZE/nLliRM9GssMk9sOIX2BznGNeHgwJiMlg="
