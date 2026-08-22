@@ -1,7 +1,7 @@
 {
   inputs = {
     moon-registry = {
-      url = "git+https://mooncakes.io/git/index?rev=37ce111fab93e63aa09bf4f154e6fae85faf4286";
+      url = "git+https://mooncakes.io/git/index?rev=c9c84f5ec832ad3ba7ffae330c6dad14775437fa";
       flake = false;
     };
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -123,6 +123,7 @@
         }
         // (lib.genAttrs [
           "moon"
+          "moonx"
           "moonc"
           "mooncake"
           "moon_cove_report"
@@ -157,6 +158,12 @@
           testToolchainHelpers = pkgs.runCommand "test-moonbit-toolchain-helpers" { } ''
             test -x ${moonbit}/bin/moon-lsp
             test -x ${moonbit}/bin/moon-ide
+
+            # `moonx` is a symlink to `moon` (argv[0] dispatch, like the
+            # official installer) and must expose the moonx CLI.
+            test -L ${moonbit}/bin/moonx
+            test -x ${moonbit}/bin/moonx
+            ${moonbit}/bin/moonx --help | grep -Fq "Run a package from the Mooncakes registry"
 
             grep -Fq "export MOON_TOOLCHAIN_ROOT='${moonbit}'" ${moonbit}/bin/moon-lsp
             grep -Fq "export MOON_HOME='${moonbit}'" ${moonbit}/bin/moon-lsp

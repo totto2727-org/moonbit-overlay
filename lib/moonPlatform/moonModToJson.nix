@@ -11,8 +11,8 @@
 }:
 let
   converterDeps = {
-    "moonbitlang/async" = "0.20.1";
-    "moonbitlang/moon_config" = "0.3.8";
+    "moonbitlang/async" = "0.21.0";
+    "moonbitlang/moon_config" = "0.3.13";
   };
   cachedRegistry = buildCachedRegistry {
     inherit registryIndexSrc;
@@ -24,16 +24,16 @@ let
   converter = writeText "moon-mod-json.mbtx" ''
     ///|
     import {
-      "moonbitlang/moon_config@0.3.8",
-      "moonbitlang/async@0.20.1",
-      "moonbitlang/async@0.20.1/stdio",
+      "moonbitlang/moon_config@0.3.13",
+      "moonbitlang/async@0.21.0",
+      "moonbitlang/async@0.21.0/stdio",
     }
 
     ///|
     async fn main {
       let source = @stdio.stdin.read_all().text()
       let (ast, reports) = @moon_config.parse_moon_mod(source, name="<stdin>")
-      // source is valid in moon.mod but is not recognized by moon_config 0.3.8.
+      // source is valid in moon.mod but is not yet recognized by moon_config.
       let actionable_reports = reports.filter(report =>
         report.msg != "Invalid moon.mod config: unexpected key `source`."
       )
