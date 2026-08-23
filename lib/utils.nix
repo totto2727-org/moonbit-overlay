@@ -4,12 +4,19 @@ rec {
   target =
     {
       "x86_64-linux" = "linux-x86_64";
+      "aarch64-linux" = "linux-aarch64";
       "aarch64-darwin" = "darwin-aarch64";
     }
     .${stdenv.hostPlatform.system} or (throw "Unsupported platform: ${stdenv.hostPlatform.system}");
 
   mkVersion = lib.escapeURL;
   latestVersion = (lib.importJSON ../versions/toolchains/latest.json).version;
+  releaseRepositoryFor =
+    record:
+    if builtins.hasAttr "linux-aarch64-toolchainsHash" record then
+      "totto2727-org/moonbit-overlay"
+    else
+      "moonbit-community/moonbit-overlay";
   # TODO(jinser): Refactoring to less messy code
   # TODO(jinser): documentation somewhere
   # `nightly` is a rolling channel: it always points at the upstream nightly
@@ -17,7 +24,7 @@ rec {
   # a single moving nightly (no dated archive to mirror). The hash in
   # versions/toolchains/nightly.json is refreshed daily by CI.
   mkCoreUri =
-    version:
+    version: releaseRepository:
     if version == "nightly" then
       "${moonbitUri}/cores/core-nightly.tar.gz"
     else
@@ -27,9 +34,9 @@ rec {
       if version' == "updating" then
         "${moonbitUri}/cores/core-latest.tar.gz"
       else
-        "https://github.com/moonbit-community/moonbit-overlay/releases/download/${mkVersion version'}/moonbit-core.tar.gz";
+        "https://github.com/${releaseRepository}/releases/download/${mkVersion version'}/moonbit-core.tar.gz";
   mkToolChainsUri =
-    version:
+    version: releaseRepository:
     if version == "nightly" then
       "${moonbitUri}/binaries/nightly/moonbit-${target}.tar.gz"
     else
@@ -39,7 +46,7 @@ rec {
       if version' == "updating" then
         "${moonbitUri}/binaries/latest/moonbit-${target}.tar.gz"
       else
-        "https://github.com/moonbit-community/moonbit-overlay/releases/download/${mkVersion version'}/moonbit-${target}.tar.gz";
+        "https://github.com/${releaseRepository}/releases/download/${mkVersion version'}/moonbit-${target}.tar.gz";
   escape =
     let
       escapeFrom = [

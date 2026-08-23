@@ -13,6 +13,7 @@ let
     target
     escape
     mkCoreUri
+    releaseRepositoryFor
     ;
 
   mk =
@@ -20,6 +21,7 @@ let
     let
       version = record.version;
       escapedRef = escape ref;
+      releaseRepository = releaseRepositoryFor record;
       warnObsolete = lib.warnOnInstantiate "moonbit-bin: version `${version}` is obsolete, please upgrade to at least ${minVersion}" pkgs.emptyFile;
     in
     if
@@ -42,12 +44,12 @@ let
       rec {
         toolchains.${escapedRef} = callPackage ./toolchains.nix {
           inherit version;
-          url = mkToolChainsUri version;
+          url = mkToolChainsUri version releaseRepository;
           hash = record."${target}-toolchainsHash";
         };
         core.${escapedRef} = callPackage ./core.nix {
           inherit version;
-          url = mkCoreUri version;
+          url = mkCoreUri version releaseRepository;
           hash = record.coreHash;
         };
 
@@ -74,7 +76,10 @@ let
     ))
   ) { };
 
-  versionPkgs = builtins.attrValues (lib.mapAttrs mk versions);
+  availableVersions = lib.filterAttrs (
+    _: record: target != "linux-aarch64" || builtins.hasAttr "${target}-toolchainsHash" record
+  ) versions;
+  versionPkgs = builtins.attrValues (lib.mapAttrs mk availableVersions);
 in
 {
   packages = flattenAttrs versionPkgs;

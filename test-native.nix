@@ -5,7 +5,7 @@ let
   pkgs = import <nixpkgs> { };
   system = pkgs.stdenv.hostPlatform.system;
   toolchain =
-    (builtins.getFlake "github:moonbit-community/moonbit-overlay").packages.${system}.moonbit_latest;
+    (builtins.getFlake "github:totto2727-org/moonbit-overlay").packages.${system}.moonbit_latest;
   bp = import ./lib/moonPlatform/buildMoonbitPackage.nix { inherit (pkgs) lib stdenv; };
   lp = import ./lib/moonPlatform/linkMoonbitProgram.nix { inherit (pkgs) lib stdenv; };
   br = import ./lib/moonPlatform/buildMoonbitRuntime.nix { inherit (pkgs) stdenv; };
