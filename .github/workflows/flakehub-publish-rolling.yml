@@ -17,4 +17,7 @@ jobs:
         with:
           persist-credentials: false
       - uses: totto2727-org/monorepo/.github/actions/setup-nix@main
+        with:
+          # This flake publishes packages and overlays, not a development shell.
+          prepare-dev-shell: false
       - uses: totto2727-org/monorepo/.github/actions/publish-flakehub@main
