@@ -1,9 +1,5 @@
 {
   inputs = {
-    moon-registry = {
-      url = "git+https://mooncakes.io/git/index?rev=c9c84f5ec832ad3ba7ffae330c6dad14775437fa";
-      flake = false;
-    };
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
@@ -14,7 +10,6 @@
   outputs =
     {
       self,
-      moon-registry,
       nixpkgs,
       treefmt-nix,
     }:
@@ -46,10 +41,6 @@
             // deprecated;
           moonbit-lang = final.callPackage ./lib/compiler.nix { };
 
-          mkMoonPlatform = final.callPackage ./lib/moonPlatform {
-            versions = import ./versions.nix lib;
-          };
-          moonPlatform = mkMoonPlatform { version = "latest"; };
           versions = import ./versions.nix lib;
         }
       );
@@ -185,16 +176,6 @@
 
             touch $out
           '';
-          # Run `nix build "#checks.<system>.testBuildMoonPackage"`
-          testBuildMoonPackage = pkgs.moonPlatform.buildMoonPackage {
-            name = "moonbit-overlay-test-with-deps";
-            src = ./test/with_deps;
-            moonMod = ./test/with_deps/moon.mod;
-            moonRegistryIndex = moon-registry;
-          };
-          testMinimalMoonModConsumer = pkgs.callPackage ./test/minimal/package.nix {
-            moonRegistryIndex = moon-registry;
-          };
         }
       );
     };
