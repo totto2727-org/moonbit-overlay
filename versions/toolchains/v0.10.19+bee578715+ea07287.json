@@ -1,0 +1,9 @@
+{
+  "version": "v0.10.19+bee578715+ea07287",
+  "coreHash": "sha256-tbM6/HWbiuMyNG81f0IjXUyNVK/ZG7iRsi6tPXRvp08=",
+  "linux-x86_64-toolchainsHash": "sha256-3R1teTyWdUBe8ys5vOZtQAQeIFKpw/L0A+Cp2pi9lP0=",
+  "linux-aarch64-toolchainsHash": "sha256-rlcM8U/RTdEnP6s+M0SQdBBGQWp5SUWuLpBl9E7Jfl8=",
+  "darwin-aarch64-toolchainsHash": "sha256-pBsnaJ78ixjlu0X1wNzWgn2ESSL/efiCeR+Q5GKh5pg=",
+  "moonRev": "c9ac7ee",
+  "moonHash": "sha256-AcadNERJZE/nLliRM9GssMk9sOIX2BznGNeHgwJiMlg="
+}
