@@ -230,6 +230,10 @@ Some deprecated packages are still exposed for compatibility; attempting to use 
 
 The moonbit-overlay is heavily inspired by [rust-overlay](https://github.com/oxalica/rust-overlay).
 
+## Fork maintenance
+
+Maintainers can find the fork's retained changes in [Upstream differences](docs/upstream-differences.md).
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
