@@ -12,7 +12,7 @@ The retained areas below describe the fork relative to that base, not a synchron
 | `lib/utils.nix`, `lib/moonbit-bin.nix`, `scripts/fetch_toolchains.sh`, and `versions/toolchains/` | Provide supported Linux ARM64 toolchains and updated binary release records. | Versions without an ARM64 archive are not exposed for that platform. Binary URLs select the release repository for the available archives. |
 | `lib/toolchains.nix` | Keep Linux TinyCC runtime helpers consistent with the selected TinyCC binary. | Linux toolchains use the matching Nix runtime helpers. Darwin retains the bundled compiler. |
 | `lib/moonPlatform/`, `flake.nix`, `flake.lock`, and `test/` | Accept current `moon.mod` files and check package builds with a pinned registry. | Package evaluation uses the standalone MoonBit converter and Import From Derivation. Tests cover the supported manifest format. |
-| `.gitignore` | Exclude root `tmp/` scratch files and linked worktrees from Git status. | Local verification artifacts do not prevent clean-checkout synchronization. The rule does not change package builds or published outputs. |
+| `.gitignore` | Exclude scratch files and worktrees nested under root `tmp/` from Git status. | Local verification artifacts do not prevent clean-checkout synchronization. The rule does not change package builds or published outputs. |
 
 The source changes above affect Nix packaging, toolchain selection, and build checks.
 The fork distributes compiler binaries and does not include modified MoonBit compiler or runtime source.
